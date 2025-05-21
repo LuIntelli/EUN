@@ -59,6 +59,10 @@
             <i class="pi pi-user"></i>Login
           </button>
         </n-form>
+        <div class="text-white mt-5 flex flex-wrap md:flex-row flex-col gap-4 justify-between md:gap-3 items-center">
+            <p class="flex gap-2">Don't have an account <RouterLink to="/register" class="text-blue-500 font-bold">Register</RouterLink></p>
+            <p class="flex gap-2 items-center">Sign in with  <RouterLink to="/login" class="text-orange-500 border border-green-950 px-3 py-2 text-[12px] rounded-md font-bold">Google <i class="fab fa-google text-orange-600"></i></RouterLink></p>
+          </div>
       </div>
     </div>
   </n-message-provider>

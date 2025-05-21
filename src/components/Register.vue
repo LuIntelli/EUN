@@ -73,12 +73,12 @@
               type="submit"
               class="bg-green-700 flex gap-2 items-center text-white font-bold px-10 py-3 rounded-full"
             >
-              <i class="pi pi-user"></i>Login
+              <i class="pi pi-user"></i>Register
             </button>
           </n-form>
-          <div class="text-white mt-5 flex justify-between gap-3 items-center">
+          <div class="text-white mt-5 flex flex-wrap md:flex-row flex-col gap-4 justify-between md:gap-3 items-center">
             <p class="flex gap-2">Already have an account <RouterLink to="/login" class="text-blue-500 font-bold">Login</RouterLink></p>
-            <p class="flex gap-2 items-center">Sign in with  <RouterLink to="/login" class="text-orange-500 border border-green-950 px-3 py-2 text-[12px] rounded-md font-bold">Login with <i class="fab fa-google text-orange-600"></i></RouterLink></p>
+            <p class="flex gap-2 items-center">Sign in with  <RouterLink to="/login" class="text-orange-500 border border-green-950 px-3 py-2 text-[12px] rounded-md font-bold">Google <i class="fab fa-google text-orange-600"></i></RouterLink></p>
           </div>
         </div>
       </div>

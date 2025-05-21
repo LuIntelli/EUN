@@ -1,3 +1,7 @@
 <template>
-    Home Page
+    <QuestionsAndAnswer />
 </template>
+
+<script setup>
+    import QuestionsAndAnswer from "../components/QuestionsAndAnswer.vue"
+</script>

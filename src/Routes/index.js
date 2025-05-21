@@ -21,6 +21,11 @@ const router = createRouter({
       name: "Register",
       component: Register,
     },
+    {
+      path: "/coursedetails",
+      name: "course-details",
+      component: Register,
+    },
   ],
 });
 
