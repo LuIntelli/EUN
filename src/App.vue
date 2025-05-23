@@ -6,7 +6,7 @@ import { NMessageProvider } from "naive-ui";
 
 <template>
   <n-message-provider>
-    <div class="bg-gray-100 min-h-screen flex flex-col px-3 py-20 md:px-20">
+    <div class="bg-gray-50 min-h-screen mx-auto  px-3 py-20">
       <div class="main">
         <RouterView></RouterView>
       </div>
