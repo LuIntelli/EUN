@@ -1,6 +1,6 @@
 <template>
   <div
-    class="top fixed w-full left-0 mx-auto z-[10px] py-1 rounded top-[-5px] flex items-center justify-between" 
+    class="top fixed w-full left-0 mx-auto z-[10px] py-1 rounded top-[-5px] flex items-center justify-between"
   >
     <h2
       class="text-green-500 bg-white hidden relative z-[1000px] flex gap-2 items-center font-medium border-blue-950 shadow-md shadow-gray-200 px-5 py-4 rounded-md"
@@ -10,7 +10,7 @@
     <h2
       class="flex gap-4 items-center bg-gray-900 w-full justify-center relative z-[1000px] border-blue-950 cursor-pointer shadow-lg shadow-gray-300 px-4 py-4 text-green-500 font-medium"
     >
-      {{ formData.time }} mins : {{ time.secs }} secs
+      {{ formData.time == undefined ? "00" : formData.time }} mins : {{ time.secs }} secs
     </h2>
   </div>
   <div
@@ -44,20 +44,19 @@
     <n-form ref="form" v-if="!clicked" :modal="formData" label-placement="top">
       <n-form-item class="mb-[-40px]">
         <n-input
-          style="outline: none; "
+          style="outline: none"
           v-model:value="formData.total"
           type="text"
           size="large"
-          
           :bordered="false"
-          class="border rounded text-[13px] border-slate-200  align-middle text-white"
+          class="border rounded text-[13px] border-slate-200 align-middle text-white"
           placeholder="Total number of questions"
           clearable
         />
       </n-form-item>
       <n-form-item label="" class="mb-[-45px]">
         <n-input
-          style="outline: none;"
+          style="outline: none"
           size="large"
           v-model:value="formData.subject"
           :bordered="false"
@@ -135,8 +134,9 @@
       @displayTotal="totalDisplay"
       v-if="questions.questions.length !== 0 && clicked === true"
       :questions="questions.questions"
-      :time = "{ mins: formData.time, secs:time.secs}"
-      @tick="handleTick" @time-up="handleTimeUp"
+      :time="{ mins: formData.time, secs: time.secs }"
+      @tick="handleTick"
+      @time-up="handleTimeUp"
       :loading="loading"
     />
 
@@ -163,10 +163,8 @@ const formData = ref({
   subject: undefined,
 });
 
-
-
 const handleTimeUp = () => {
-  console.log('Time is up!');
+  console.log("Time is up!");
   // You can submit the quiz here
 };
 // Initialize with your api key
@@ -314,7 +312,7 @@ const handleGenerate = async (total, subject, category) => {
     console.log(questionText.value);
 
     const result = await model.generateContent(
-      `Generate ${formData.total} unique questions on  ${questionText.value}.
+      `Generate standard unique questions on  ${questionText.value}.
       difficulty:${category}.
       subject: ${subject}
       Total number of questions: ${total}`
@@ -346,10 +344,12 @@ const totalDisplay = function (total) {
 };
 
 // display timer
-const handleTick = ({ mins, secs}) => {
-  // update 
-  // console.log(mins, secs)
-}
+const handleTick = ({ mins, secs }) => {
+  // update time: mins and secs
+  time.value.secs = secs;
+  formData.value.time = mins;
+  console.log(time.value.secs, formData.value.time )
+};
 
 onMounted(() => {
   totalDisplay();
