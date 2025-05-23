@@ -1,6 +1,6 @@
 <template>
   <div
-    class="top fixed w-full left-0 mx-auto z-[10px] py-1 rounded top-[-5px] flex items-center justify-between"
+    class="top fixed w-full left-0 mx-auto z-[10px] py-1 rounded top-[-5px] flex items-center justify-between" 
   >
     <h2
       class="text-green-500 bg-white hidden relative z-[1000px] flex gap-2 items-center font-medium border-blue-950 shadow-md shadow-gray-200 px-5 py-4 rounded-md"
@@ -135,8 +135,8 @@
       @displayTotal="totalDisplay"
       v-if="questions.questions.length !== 0 && clicked === true"
       :questions="questions.questions"
-      :time="time"
-      :mins="formData.time"
+      :time = "{ mins: formData.time, secs:time.secs}"
+      @tick="handleTick" @time-up="handleTimeUp"
       :loading="loading"
     />
 
@@ -163,6 +163,12 @@ const formData = ref({
   subject: undefined,
 });
 
+
+
+const handleTimeUp = () => {
+  console.log('Time is up!');
+  // You can submit the quiz here
+};
 // Initialize with your api key
 const genAI = new GoogleGenerativeAI("AIzaSyBrzmLZL7DeknkLUbDJelZmWMhdxuPz3mo");
 
@@ -338,6 +344,12 @@ const totalDisplay = function (total) {
     score.value = (+total * 100) / +questions.questions.length;
   }
 };
+
+// display timer
+const handleTick = ({ mins, secs}) => {
+  // update 
+  // console.log(mins, secs)
+}
 
 onMounted(() => {
   totalDisplay();

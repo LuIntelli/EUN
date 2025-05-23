@@ -60,9 +60,17 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineProps, computed, watch } from "vue";
+import {
+  ref,
+  reactive,
+  defineProps,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+} from "vue";
 
-const emit = defineEmits(["displayTotal"]);
+// const emit = defineEmits([]);
 const props = defineProps({
   questions: {
     required: true,
@@ -72,26 +80,28 @@ const props = defineProps({
     required: true,
     type: Object,
   },
-  mins: {
-    required: true,
-    type: Number,
-  },
 });
 const formData = reactive({});
 const correctAnswer = ref([]);
+
+let timer = null;
 const total = ref(0);
-console.log(props.mins, 11);
-const startExam = setInterval(() => {
-  props.time.secs++;
 
-  if (props.time.secs == 60) {
-    
-    console.log(props.mins, 11);
+const emit = defineEmits(["tick", "time-up", "displayTotal"]);
+const mins = ref(props.time.mins);
+const secs = ref(props.time.secs);
 
-    props.time.secs = 0;
+const quizTimer = setInterval(() => {
+  secs.value++;
+  emit("tick", { mins: mins.value, secs:secs.value})
+  if (secs.value == 60) {
+    secs.value = 0;
+    mins.value--;
+
+    secs.value++;
   }
-  if (props.mins <= 0) {
-    clearInterval(startExam);
+  if (mins.value == 0) {
+    clearInterval(quizTimer);
   }
 }, 1000);
 
