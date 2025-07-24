@@ -2,8 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* :root {
+  primary-color:"rgba(13, 6, 45, 1)"
+} */
+
+.hide-scrollbar {
+  scrollbar-width: none;         /* Firefox */
+  -ms-overflow-style: none;      /* Internet Explorer 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                 /* Safari and Chrome */
+}
+
 * {
-  font-family: "Poppins";
+  font-family: "Urbanist";
+  object-fit: cover;
+  font-weight: 600;
+}
+ td {
+  font-weight: 500 !important;
+
+}
+input {
+  font-weight: 500 !important;
+
+  /* background-color: red !important; */
+}
+input {
+  font-weight: @apply font-medium !important text-slate-100;
+}
+
+/* utils */
+.mainTitle {
+  font-family: "Urbanist";
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0%;
+  line-height:100%;
+  color: rgba(13, 6, 45, 1);
+}
+
+.generate {
+  /* background-color: red; */
+  font-weight: bold;
 }
 
 .n-input__textarea, 
@@ -11,4 +53,8 @@
   outline: none !important;
   box-shadow: none !important;
   background-color: transparent !important;
+}
+.total, .title {
+  font-family: "Bricolage Grotesque" !important;
+
 }

@@ -1,7 +1,7 @@
 <template>
-    <QuestionsAndAnswer />
+    <Home />
 </template>
 
 <script setup>
-    import QuestionsAndAnswer from "../components/QuestionsAndAnswer.vue"
+import Home from "../components/Home.vue"
 </script>

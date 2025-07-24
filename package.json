@@ -1,5 +1,5 @@
 {
-  "name": "quiz",
+  "name": "Eun Admin Dashboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,12 +10,21 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/vue-editor": "^3.2.3",
+    "@vicons/fa": "^0.13.0",
+    "@vicons/ionicons5": "^0.13.0",
+    "@vicons/tabler": "^0.13.0",
+    "@vueup/vue-quill": "^1.2.0",
+    "axios": "^1.10.0",
     "naive-ui": "^2.41.0",
+    "pinia": "^3.0.3",
     "primeicons": "^7.0.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1",
     "vue-spinner": "^1.0.4",
     "vue-spinner-component": "^1.0.5",
+    "vue-toastification": "^2.0.0-rc.5",
     "vue3-spinner": "^0.0.17",
     "vue3-spinners": "^1.3.1"
   },
