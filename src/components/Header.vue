@@ -10,13 +10,13 @@
         title="European University Logo"
       />
     </a>
-    <div class="flex items-center rounded-md   gap-5 w-[400px] border shadow-slate-100  py-5 shadow-md relative">
+    <div class="flex items-center rounded-md   gap-5 w-[300px] border shadow-slate-100  py-5 shadow-md relative">
       <!-- <div class="img user border rounded-l-lg w-[100px] h-[70px]"></div> -->
       <div
         class="user-details flex justify-between px-1 pr-5 w-full items-center"
       >
         <div class="details flex flex-col w-full pl-2 gap-1">
-          <h2 class="text-[rgba(61,58,121,1)] w-full font-[600] text-[12px] border-b-2 border-[rgba(61,58,121,1)] pb-2">
+          <h2 class="text-[rgba(61,58,121,1)] w-full font-[600] text-[12px] border-b-2 border-[#ebeaec] pb-2">
            Full Name : {{ auth?.user?.full_name }}
           </h2>
           <h3
@@ -29,7 +29,7 @@
           <button
             @click="toggleStatus"
             v-if="!auth.status"
-            class="border-2 border-[rgba(61,58,121,1)] status_ w-[40px] rounded-full h-[40px] shadow"
+            class="border-2 border-[#ebeaec] status_ w-[40px] rounded-full h-[40px] shadow"
           >
             <i class="fa fa-caret-down status_ text-[rgba(61,58,121,1)]"></i>
           </button>

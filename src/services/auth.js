@@ -1,12 +1,12 @@
 import endpoints from "./endpoints";
-import api, { BaseUrl } from "../utils/api";
+import  api, { BaseUrl,noApi } from "../utils/api";
 
 const { UniversityAdmin } = endpoints;
 console.log(UniversityAdmin);
 
 export const loginApi = async (credentials) => {
   try {
-    const { data } = await api.postForm(
+    const { data } = await noApi.postForm(
       `${BaseUrl}/${UniversityAdmin.auth.login}`,
       credentials
     );

@@ -98,9 +98,18 @@ const fetchUser = async () => {
     Object.assign(formData, res);
   } catch (error) {
     message.error("Failed to fetch user details");
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     loading.value = false;
   }
@@ -113,9 +122,18 @@ const handleSubmit = async () => {
     message.success("User updated successfully");
   } catch (error) {
     message.error(error.response?.data?.message || "Failed to update user");
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     submitting.value = false;
   }

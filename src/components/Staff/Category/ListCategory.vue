@@ -34,9 +34,18 @@ const fetchCategories = async () => {
     categories.value = res.results.data;
   } catch (err) {
     console.error("Error fetching All the Categories:", err.message);
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     loading.value = false;
   }

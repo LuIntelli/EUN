@@ -122,6 +122,11 @@
             <n-switch v-model:value="formData.meta_description" />
           </n-form-item>
         </div>
+        <div class="flex items-center gap-5">
+          <n-form-item label="Is Active" path="is_active">
+            <n-switch v-model:value="formData.is_active" />
+          </n-form-item>
+        </div>
       </div>
       <n-form-item
         label="Hero Image"
@@ -210,12 +215,21 @@
           filterable
         />
       </n-form-item>
-      <n-form-item label="Tags" path="tags">
+      <n-form-item label="Tags" class="mt-4" path="tags">
+        <n-select
+          v-model:value="formData.tags"
+          :options="listTagsOption"
+          placeholder="Select Tag"
+          :loading="loadingData"
+          filterable
+        />
+      </n-form-item>
+      <!-- <n-form-item label="Tags" path="tags">
         <n-dynamic-tags
           v-model:value="formData.tags"
           placeholder="Type and press Enter"
         />
-      </n-form-item>
+      </n-form-item> -->
 
       <button
         type="submit"
@@ -243,6 +257,7 @@ import {
   editPost,
   listAuthors,
   listCategory,
+  listTags,
 } from "@/services/Blog";
 import { listFaculties } from "@/services/facultiesAndDepartment";
 
@@ -262,7 +277,7 @@ const formData = reactive({
   category: "",
   content: "",
   excerpt: "",
-  tags: [""],
+  tags: null,
   faculty: "",
   meta_description: "",
   meta_keywords: "",
@@ -273,11 +288,13 @@ const formData = reactive({
   updated_at: null,
   submitted_by: "",
   is_published: null,
+  is_active: "false",
   is_featured: "false",
   id: "",
 });
 
 const facultiesOption = ref([]);
+const listTagsOption = ref([]);
 const categoriesOption = ref([]);
 const authorsOption = ref([]);
 const loadingData = ref(false);
@@ -285,6 +302,11 @@ const loadingData = ref(false);
 onMounted(async () => {
   loadingData.value = true;
   try {
+    const tags = await listTags();
+    listTagsOption.value = tags.results.map((tag) => ({
+      label: tag.name || `Tag ${tag.id}`,
+      value: Number(tag.id),
+    }));
     const res = await listFaculties();
     const authors = await listAuthors();
     const categories = await listCategory();
@@ -302,9 +324,18 @@ onMounted(async () => {
     }));
   } catch (err) {
     console.error("Error loading data", err);
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     loadingData.value = false;
   }
@@ -362,6 +393,8 @@ const fetchBlogPosts = async () => {
     const id = route.params.id;
     const data = await detailsPost(id);
     Object.assign(formData, data);
+    formData.tags = data.tags[0];
+    console.log(data.tags);
 
     if (data.hero_image) {
       photoPreview1.value = data.hero_image;
@@ -397,9 +430,18 @@ const handleSubmit = async () => {
   } catch (err) {
     console.error(err);
     message.error("Blog post not updated");
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     submitting.value = false;
   }

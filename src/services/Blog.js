@@ -85,8 +85,8 @@ export const createCategory = async (credentials) => {
     );
 
     return data;
-  } catch (err) {
-    throw err;
+  } catch (errorr) {
+    throw errorr;
   }
 };
 export const listCategory = async () => {

@@ -131,6 +131,11 @@
             <n-switch v-model:value="formData.meta_description" />
           </n-form-item>
         </div>
+        <div class="flex items-center gap-5">
+          <n-form-item label="Is Active" path="is_active">
+            <n-switch v-model:value="formData.is_active" />
+          </n-form-item>
+        </div>
       </div>
       <n-form-item
         label="Hero Image"
@@ -222,12 +227,21 @@
       <!-- <n-form-item label="Category"  path="category">
         <n-input v-model:value="formData.category" placeholder="" />
       </n-form-item> -->
-      <n-form-item label="Tags" path="tags">
+      <n-form-item label="Tags" class="mt-4" path="tags">
+        <n-select
+          v-model:value="formData.tags"
+          :options="listTagsOption"
+          placeholder="Select Tag"
+          :loading="loadingData"
+          filterable
+        />
+      </n-form-item>
+      <!-- <n-form-item label="Tags" path="tags">
         <n-dynamic-tags
           v-model:value="formData.tags"
           placeholder="Type and press Enter"
         />
-      </n-form-item>
+      </n-form-item> -->
 
       <button
         type="submit"
@@ -250,7 +264,12 @@ import { ArchiveOutline as ArchiveIcon } from "@vicons/ionicons5";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css"; //
 
-import { createPost, listAuthors, listCategory } from "@/services/Blog";
+import {
+  createPost,
+  listAuthors,
+  listCategory,
+  listTags,
+} from "@/services/Blog";
 import { listFaculties } from "@/services/facultiesAndDepartment";
 
 const router = useRouter();
@@ -269,7 +288,7 @@ const formData = reactive({
   category: null,
   content: "",
   excerpt: "",
-  tags: [""],
+  tags: null,
   faculty: null,
   meta_description: "",
   meta_keywords: "",
@@ -281,10 +300,12 @@ const formData = reactive({
   submitted_by: "",
   is_published: "",
   is_featured: "false",
+  is_active: "false",
   id: "",
 });
 
 const facultiesOption = ref([]);
+const listTagsOption = ref([]);
 const categoriesOption = ref([]);
 const authorsOption = ref([]);
 const loadingData = ref(false);
@@ -293,6 +314,11 @@ onMounted(async () => {
   loadingData.value = true;
   try {
     const res = await listFaculties();
+    const tags = await listTags();
+    listTagsOption.value = tags.results.map((tag) => ({
+      label: tag.name || `Tag ${tag.id}`,
+      value: Number(tag.id),
+    }));
     const authors = await listAuthors();
     const categories = await listCategory();
     authorsOption.value = authors.results.map((author) => ({
@@ -308,10 +334,19 @@ onMounted(async () => {
       value: Number(page.id),
     }));
   } catch (err) {
-    console.error("Error loading data", err);
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    console.error("Error loading data", err.response?.data || err);
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     loadingData.value = false;
   }
@@ -385,9 +420,18 @@ const handleSubmit = async () => {
   } catch (err) {
     console.error(err);
     message.error("Blog post not created");
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     submitting.value = false;
   }
@@ -496,34 +540,27 @@ const rules = {
 
   is_featured: [
     {
-      required: true,
-      type: "boolean",
-      message: "Is featured is required",
-      trigger: "change",
+      required: false,
     },
   ],
   is_published: [
     {
-      required: true,
-      type: "boolean",
-      message: "Publised date is required",
-      trigger: "change",
+      required: false,
     },
   ],
   meta_description: [
     {
-      required: true,
-      type: "boolean",
-      message: "Meta description required",
-      trigger: "change",
+      required: false,
     },
   ],
   meta_keywords: [
     {
-      required: true,
-      type: "boolean",
-      message: "Meta keywords is required",
-      trigger: "change",
+      required: false,
+    },
+  ],
+  is_active: [
+    {
+      required: false,
     },
   ],
   hero_image: [
@@ -552,23 +589,20 @@ const rules = {
   ],
   tags: [
     {
-      required: true,
-      type: "array",
-      message: "Please enter at least one tag",
-      trigger: "change",
+      required: false,
     },
-    {
-      validator: (_, value) => {
-        if (!Array.isArray(value) || value.length === 0) {
-          return new Error("Please enter at least one tag");
-        }
-        if (value.some((tag) => !tag || tag.trim() === "")) {
-          return new Error("Empty tags are not allowed");
-        }
-        return true;
-      },
-      trigger: "blur",
-    },
+    // {
+    //   validator: (_, value) => {
+    //     if (!Array.isArray(value) || value.length === 0) {
+    //       return new Error("Please enter at least one tag");
+    //     }
+    //     if (value.some((tag) => !tag || tag.trim() === "")) {
+    //       return new Error("Empty tags are not allowed");
+    //     }
+    //     return true;
+    //   },
+    //   trigger: "blur",
+    // },
   ],
 };
 </script>

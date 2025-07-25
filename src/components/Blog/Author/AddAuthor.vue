@@ -192,9 +192,18 @@ onMounted(async () => {
     }));
   } catch (err) {
     console.error("Error loading staff data", err);
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     loadingData.value = false;
   }
@@ -244,9 +253,18 @@ const handleSubmit = async () => {
   } catch (err) {
     console.error(err);
     message.error("Author not added to the list");
-    err?.error?.message?.forEach((msg) => {
-      message.error(msg);
-    });
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data)[key]);
+      }
+    }
   } finally {
     submitting.value = false;
   }
