@@ -1,8 +1,12 @@
 <template>
   <n-message-provider>
-    
-    <div class="py-10 px-5 md:w-[60%] mx-auto">
-      <div class="border p-6 rounded-xl shadow-md bg-white">
+    <div class="py-10 px-5  md:w-[40%] mx-auto">
+      <div class="border p-6 rounded-xl shadow-md">
+        <router-link
+          to="/login"
+          class="text-[rgba(61,58,121,1)] mb-1 inline-block p-2 px-5 rounded-sm bg-[rgba(61,58,121,0.1)]"
+          >Login</router-link
+        >
         <div class="text-center mb-6">
           <h2 class="font-bold text-[20px] text-[rgba(61,58,121,1)]">
             Reset Password
@@ -79,6 +83,7 @@ const rules = {
 };
 
 const handleReset = () => {
+  console.log(formData)
   form.value?.validate(async (errors) => {
     if (!errors) {
       isLoading.value = true;
@@ -87,22 +92,19 @@ const handleReset = () => {
         console.log(res.message);
         if (res.success) {
           isLoading.value = false;
-          
+          router.push("/confirm-reset-password/");
+          formData.email = "";
+
         }
         message.success("Password reset link sent to your email", {
           icon: () => h("i", { class: "pi pi-check text-green-500" }),
         });
-        formData.email = "";
-        router.push("/confirm-reset-password/");
-
       } catch (error) {
         isLoading.value = false;
-
-        message.error(
-          error.response?.data?.message  || "Failed to send reset link"
-        );
+        message.error(error.response?.data?.message || "Reset link not sent");
       }
     }
   });
 };
+
 </script>

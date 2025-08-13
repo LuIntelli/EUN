@@ -144,7 +144,7 @@ const handleChangePassword = () => {
         isLoading.value = false;
         message.error(
           error.response?.data?.message ||
-            "Reset failed. Check the code and try again."
+            "Reset not successful. Check the code and try again."
         );
       }
     }

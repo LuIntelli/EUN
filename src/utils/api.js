@@ -12,7 +12,7 @@ const auth = useAuthStore();
 if (token == null) {
   console.log(token);
 }
-// token = null;
+// token = null;  
 console.log(token);
 
 const noApi = axios.create({

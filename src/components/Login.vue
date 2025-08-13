@@ -1,9 +1,9 @@
 <template>
   <n-message-provider>
     <div
-      class="md:mx-auto py-[100px] mx-10 md:w-[70%] flex flex-col justify-center items-center"
+      class="md:mx-auto py-[100px] mx-10 md:w-[40%] flex flex-col justify-center"
     >
-      <div class="border p-5 w-[50%] rounded-xl">
+      <div class="border p-5 rounded-xl">
         <div class="top text-center mb-5">
           <h2 class="font-bold text-[20px] text-[rgba(61,58,121,1)]">
             Login to Admin Dashboard
@@ -65,11 +65,11 @@
               <i class="pi pi-user"></i>Login
             </button>
           </n-form>
-          
+
           <div
-            class="text-[rgba(61,58,121,1)] font-bold mt-5 flex flex-wrap md:flex-row flex-col gap-4 justify-between md:gap-3 items-center"
+            class="text-[rgba(61,58,121,1)] font-bold mt-5 flex flex-wrap md:flex-row flex-col gap-4 md:gap-3"
           >
-            <p class="flex gap-2 items-center">
+            <p class="flex gap-3 items-center">
               Forgot your password?
               <RouterLink
                 to="/reset-password/"
@@ -132,19 +132,46 @@ const handleLogin = async () => {
     // console.log(res.data.user, res.data);
 
     if (res.data.user) {
+      console.log(res.data.user, res.success.data);
+      const token = res.data.access;
+
+      const user = res.data.user;
+
+      auth.login(token, user);
+      console.log(auth);
+      loading.value = false;
+      message.success("Login successful");
+      router.push("/");
+    } else if (res?.data.user) {
+      const token = res.data.access;
+
+      const user = res.data.user;
+
+      auth.login(token, user);
+      console.log(auth);
+      loading.value = false;
+      message.success("Login successful");
+      router.push("/");
       console.log(res.data.user, res.data);
     }
-    const token = res.data.access;
-
-    const user = res.data.user;
-
-    auth.login(token, user);
-    console.log(auth);
-    loading.value = false;
-    message.success("Login successful");
-    router.push("/");
   } catch (err) {
-    message.error(err.message);
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        console.log(err.response.data.error.details.error.message[0]);
+        message.error(
+          err.response.data.error.details.error.message[0] ||
+            "An error occurred"
+        );
+        break;
+      }
+    }
     loading.value = false;
   }
 };

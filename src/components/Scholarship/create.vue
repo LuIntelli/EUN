@@ -200,7 +200,8 @@ onMounted(async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -250,7 +251,8 @@ const handleSubmit = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {

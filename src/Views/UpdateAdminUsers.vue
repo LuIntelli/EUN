@@ -182,7 +182,7 @@ onMounted(async () => {
     formData.is_active = user.is_active;
     formData.is_superuser = user.is_superuser;
   } catch (err) {
-    message.error("Failed to load user");
+    message.error("User data not fetched");
   }
 });
 
@@ -199,7 +199,7 @@ const handleUpdate = () => {
         });
       } catch (err) {
         message.error(
-          "Update failed: " + (err.response?.data?.message || err.message)
+          "User data not updated: " || (err.response?.data?.message || err.message)
         );
       }
     }

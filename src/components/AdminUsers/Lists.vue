@@ -34,7 +34,7 @@ const fetchUsers = async () => {
     users.value = res.results.data;
     console.log(res.results.data);
   } catch (err) {
-    console.error("Failed to fetch users:", err.message);
+    console.error("Users Data not fetched:");
     for (const key in err.response?.data) {
       if (
         (err.response?.data)[key] &&
@@ -44,7 +44,8 @@ const fetchUsers = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -62,7 +63,7 @@ const handleDelete = async (id) => {
     loading.value = false;
   } catch (error) {
     console.error(error);
-    message.error("Failed to delete user");
+    message.error("User not deleted");
   }
 };
 

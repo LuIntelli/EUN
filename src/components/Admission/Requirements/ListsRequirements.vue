@@ -50,7 +50,8 @@ const fetchRequirements = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -71,7 +72,7 @@ const handleDelete = async (id) => {
     fetchRequirements();
   } catch (error) {
     console.error(error);
-    message.error("Failed to delete requirement");
+    message.error("Requirement not deleted");
   }
 };
 

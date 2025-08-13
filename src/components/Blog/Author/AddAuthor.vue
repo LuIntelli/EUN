@@ -183,15 +183,15 @@ onMounted(async () => {
   try {
     faculties.value = await listFaculties();
     const departments = await listDepartments();
-    // console.log(departmentOptions.results.data)
+    // console.log(departments.results.success.data);
 
-    departmentOptions.value = departments.results.data.map((department) => ({
+    departmentOptions.value = departments.results.success.data.map((department) => ({
       label: department.name || `Department ID ${department.id}`,
       value: Number(department.id),
       faculty: department.faculty_name,
     }));
   } catch (err) {
-    console.error("Error loading staff data", err);
+    console.log("Error loading staff data", err);
     for (const key in err.response?.data) {
       if (
         (err.response?.data)[key] &&
@@ -201,7 +201,8 @@ onMounted(async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -218,7 +219,7 @@ watch(
     // formData.department_name = selected.label;
     // formData.faculty_name = selected.faculty;
     // console.log(faculties)
-    faculties.value.results.data.forEach((data) => {
+    faculties.value.results.success.data.forEach((data) => {
       if (data.name === selected.faculty) formData.faculty = Number(data.id);
     });
     console.log(selected);
@@ -260,9 +261,13 @@ const handleSubmit = async () => {
       ) {
         err.response?.data[key].forEach((msg) => {
           message.error(`${key}: ${msg}`);
+          
         });
+        break;
+
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {

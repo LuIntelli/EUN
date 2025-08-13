@@ -178,7 +178,8 @@ onMounted(async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -218,7 +219,6 @@ const handleSubmit = async () => {
     router.push("/page/hero-slides");
   } catch (err) {
     console.error(err);
-    message.error("Data not created");
     for (const key in err.response?.data) {
       if (
         (err.response?.data)[key] &&
@@ -228,7 +228,8 @@ const handleSubmit = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {

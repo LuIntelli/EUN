@@ -1,7 +1,12 @@
 <template>
   <n-message-provider>
     <div class="py-10 px-5 md:w-[60%] mx-auto">
-      <div class="border p-6 rounded-xl shadow-md bg-white">
+      <div class="border p-6 rounded-xl shadow-md">
+        <router-link
+          to="/login"
+          class="text-[rgba(61,58,121,1)] p-2 px-5 rounded-sm bg-[rgba(61,58,121,0.1)]"
+          >Login</router-link
+        >
         <div class="text-center mb-6">
           <h2 class="font-bold text-[20px] text-[rgba(61,58,121,1)]">
             Confirm Password Reset
@@ -28,7 +33,7 @@
             <n-input
               v-model:value="formData.email"
               placeholder="Your email"
-              class=" rounded-sm py-1"
+              class="rounded-sm py-1"
               clearable
             />
           </n-form-item>
@@ -40,7 +45,7 @@
             <n-input
               v-model:value="formData.resetCode"
               placeholder="Enter reset code"
-              class=" rounded-sm py-1"
+              class="rounded-sm py-1"
               clearable
             />
           </n-form-item>
@@ -51,7 +56,7 @@
             </template>
             <n-input
               v-model:value="formData.newPassword"
-              class=" rounded-sm py-1"
+              class="rounded-sm py-1"
               type="password"
               placeholder="New password"
               clearable
@@ -64,7 +69,7 @@
             </template>
             <n-input
               v-model:value="formData.confirmPassword"
-              class=" rounded-sm py-1"
+              class="rounded-sm py-1"
               type="password"
               placeholder="Confirm new password"
               clearable
@@ -154,18 +159,17 @@ const handleConfirmReset = () => {
         }).then((res) => {
           if (res) {
             isLoading.value = false;
+            message.success("Password reset successful!", {
+              icon: () =>
+                h("i", { class: "pi pi-check-circle text-green-500" }),
+            });
+            setTimeout(() => router.push("/login"), 1500);
           }
         });
-        message.success("Password reset successful!", {
-          icon: () => h("i", { class: "pi pi-check-circle text-green-500" }),
-        });
-
-        setTimeout(() => router.push("/login"), 1500);
       } catch (error) {
         isLoading.value = false;
         message.error(
-          error.response?.data?.message ||
-            "Reset failed. Check the code and try again."
+          error.response?.data?.message || "Reset failed. Try again."
         );
       }
     }

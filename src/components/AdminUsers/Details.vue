@@ -92,8 +92,8 @@ const fetchUser = async () => {
     const res = await adminUserDetails(id);
     Object.assign(formData, res.data);
     console.log(formData);
-  } catch (error) {
-    message.error("Failed to fetch user details");
+  } catch (err) {
+    message.error("User details not fetched");
     for (const key in err.response?.data) {
       if (
         (err.response?.data)[key] &&
@@ -103,7 +103,8 @@ const fetchUser = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -128,7 +129,8 @@ const handleSubmit = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {

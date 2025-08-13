@@ -97,19 +97,7 @@ const fetchUser = async () => {
     const res = await adminUserDetails(username);
     Object.assign(formData, res);
   } catch (error) {
-    message.error("Failed to fetch user details");
-    for (const key in err.response?.data) {
-      if (
-        (err.response?.data)[key] &&
-        Array.isArray((err.response?.data)[key])
-      ) {
-        err.response?.data[key].forEach((msg) => {
-          message.error(`${key}: ${msg}`);
-        });
-      } else {
-        message.error((err.response?.data)[key]);
-      }
-    }
+    message.error("User details not fetched");
   } finally {
     loading.value = false;
   }
@@ -121,7 +109,7 @@ const handleSubmit = async () => {
     await editAdminUser(username, formData);
     message.success("User updated successfully");
   } catch (error) {
-    message.error(error.response?.data?.message || "Failed to update user");
+    // message.error(error.response?.data?.message || "Failed to update user");
     for (const key in err.response?.data) {
       if (
         (err.response?.data)[key] &&
@@ -131,7 +119,8 @@ const handleSubmit = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {

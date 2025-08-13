@@ -47,7 +47,7 @@ import ResetPassword from "../Views/ResetPassword.vue";
 import PasswordResetConfirm from "../Views/PasswordResetConfirm.vue";
 import AdminUsers from "../Views/AdminUsers.vue";
 import AdminUser from "../Views/AdminUser.vue";
-import ViewPages from "../Views/ViewPages.vue";
+// import ViewPages from "../Views/ViewPages.vue";
 import Main from "@/layout/Main.vue";
 import AddAuthor from "../components/Blog/Author/AddAuthor.vue";
 import ListSpecificAuthor from "../components/Blog/Author/ListSpecificAuthor.vue";
@@ -953,11 +953,11 @@ const router = createRouter({
           name: "admin-user-details",
           component: AdminUser,
         },
-        {
-          path: "/viewpages/",
-          name: "view-pages",
-          component: ViewPages,
-        },
+        // {
+        //   path: "/viewpages/",
+        //   name: "view-pages",
+        //   component: ViewPages,
+        // },
         {
           path: "/:catchAll(.*)",
           name: "not-found",

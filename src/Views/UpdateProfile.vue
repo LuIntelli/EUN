@@ -106,7 +106,7 @@ onMounted(async () => {
       Object.assign(formData, user.data);
     }
   } catch (err) {
-    message.error("Failed to load profile");
+    message.error("Profile data not loaded");
   }
 });
 
@@ -121,7 +121,7 @@ const handleUpdate = () => {
           icon: () => h("i", { class: "pi pi-check-circle text-green-500" }),
         });
       } catch (err) {
-        message.error("Update failed");
+        message.error("Profile not updated");
       }
     }
   });

@@ -46,7 +46,8 @@ const fetchSteps = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -67,7 +68,7 @@ const handleDelete = async (id) => {
     fetchSteps();
   } catch (error) {
     console.error(error);
-    message.error("Failed to delete step");
+    message.error("Admission step not deleted");
   }
 };
 

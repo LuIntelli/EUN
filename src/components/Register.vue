@@ -252,7 +252,19 @@ const handleSubmit = async () => {
     // Redirect to Admin
     console.log(res);
   } catch (error) {
-    message.error(error.message);
+    for (const key in err.response?.data) {
+      if (
+        (err.response?.data)[key] &&
+        Array.isArray((err.response?.data)[key])
+      ) {
+        err.response?.data[key].forEach((msg) => {
+          message.error(`${key}: ${msg}`);
+        });
+      } else {
+        message.error((err.response?.data).message || "An error occurred");
+        break;
+      }
+    }
   }
 };
 

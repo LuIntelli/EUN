@@ -66,7 +66,7 @@ export const changePassword = async (credentials) => {
 // Reset Password
 export const resetPassword = async (credentials) => {
   try {
-    const { data } = await api.postForm(
+    const { data } = await noApi.postForm(
       `${BaseUrl}${UniversityAdmin.auth.resetPassword}`,
       credentials
     );
@@ -79,7 +79,7 @@ export const resetPassword = async (credentials) => {
 // Reset Confirm Password
 export const confirmResetPassword = async (credentials) => {
   try {
-    const { data } = await api.postForm(
+    const { data } = await noApi.postForm(
       `${BaseUrl}${UniversityAdmin.auth.resetComfirmPassword}`,
       credentials
     );

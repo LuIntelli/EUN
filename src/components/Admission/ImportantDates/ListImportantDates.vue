@@ -49,7 +49,8 @@ const fetchDates = async () => {
           message.error(`${key}: ${msg}`);
         });
       } else {
-        message.error((err.response?.data)[key]);
+        message.error((err.response?.data).message || "An error occurred");
+        break;
       }
     }
   } finally {
@@ -70,7 +71,7 @@ const handleDelete = async (id) => {
     fetchDates();
   } catch (error) {
     console.error(error);
-    message.error("Failed to delete date");
+    message.error("Date not deleted");
   }
 };
 
